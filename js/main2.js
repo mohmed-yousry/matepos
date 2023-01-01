@@ -35,13 +35,12 @@
   const sochilMadieIcons = document.querySelector(".sochilaside") ; 
   
   window.addEventListener("scroll" , () => {
-  
+
       if(scrollY >= footer.offsetTop  - 650 ) {
         let num = (scrollY - (footer.offsetTop  - 650)) - 60 ;  ;
         sochilMadieIcons.style.top = `calc(20% + ${-num}px)` ;
       } else {
-        sochilMadieIcons.style.top = `calc(20% + 97px)` ;
-  
+        sochilMadieIcons.style.top = `calc(20% + 5vh)` ;
       }
   
   
@@ -51,17 +50,24 @@
   
   window.onload = () =>{
     // test 
+    let iconsSohil = document.querySelector(".sochilaside") ; 
     if(localStorage.getItem("lang") == "en" ) {
+
       let leng = document.querySelector(".language").innerHTML ; 
       document.querySelector(".language").innerHTML = leng.replace("en" , "ar")
+      if(iconsSohil != null) {
+        iconsSohil.style.direction = "rtl" ; 
+      }
     } else {
       let leng = document.querySelector(".language").innerHTML ; 
       document.querySelector(".language").innerHTML = leng.replace("ar" , "en")
+      if(iconsSohil != null) {
+        iconsSohil.style.direction = "ltr" ; 
+      }
   
     }
   
-  
-  
+  document.querySelector("#loader").style.display = "none"
   }
   // onload function
   
@@ -92,14 +98,16 @@
   const serviceBtn = document.querySelector(".services-link") ; 
   const dropdownNavMobile = document.querySelector(".services-link .drop-down") ; 
   const heightDropdownNavMobile = dropdownNavMobile.scrollHeight ; 
-  serviceBtn.addEventListener("click" , (btn) => {
-    
-    if(dropdownNavMobile.clientHeight < heightDropdownNavMobile ) {
-      dropdownNavMobile.style.height = `${heightDropdownNavMobile}px`
+  if(serviceBtn != null) {
+    serviceBtn.addEventListener("click" , (btn) => {
+      
+      if(dropdownNavMobile.clientHeight < heightDropdownNavMobile ) {
+        dropdownNavMobile.style.height = `${heightDropdownNavMobile}px`
     } else {
       dropdownNavMobile.style.height = `0px`
     }
   })
+}
   // handle service dropDown 
   
   // console.log()
@@ -132,6 +140,7 @@
   let allCards = Array.from(document.querySelectorAll(".cards .card")) ; 
   
   let paringCards = document.querySelector(".cards")
+
   filterBtn.forEach(e=> {
       e.addEventListener("click" , (tr) => {
           filterBtn.forEach(z=> {
@@ -147,7 +156,6 @@
                   c.children[1].classList.remove("w-[70%]" )
               })
           } else {
-              console.log()
               paringCards.classList.remove("grid" , "grid-cols-12" , "gap-6")
               allCards.forEach(c => {
                   c.className = `flex items-center mb-4 bg-white maxmd:flex-col maxmd:pb-6` ; 
@@ -192,16 +200,12 @@
 let allCards = Array.from(document.querySelectorAll(".bloger .right .card")) ;
 allCards.forEach(e=> {
     e.addEventListener("click"  , (tr) => {
-        console.log(e.getAttribute("href"))
         window.location.href = e.getAttribute("href") ;
     })
 })
 
 
   // blog pages
-
-
-
   // index
 
   // handle content overlay 
@@ -543,11 +547,25 @@ if(filterMobileBtn != null) {
 // contact page
 const checkNumber = document.querySelector(".mobile-check") ; 
 const formContact = document.querySelector(".formContact") ; 
+const regEmail =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const emailInput = document.querySelector(".email-input") ; 
+
+
 // formContact.clientHeight
 if(formContact != null) {
   formContact.addEventListener("submit" , ev=> {
-    if(checkNumber.classList.contains("notValid") || checkNumber.value.length == 0) {
+    if(checkNumber.classList.contains("notValid") || checkNumber.value.length == 0 && emailInput.classList.contains("notValid") || emailInput.value.length == 0) {
       ev.preventDefault() ; 
+    }
+  })
+}
+if(emailInput != null) {
+  emailInput.addEventListener("input" , () => {
+    if(!emailInput.value.match(regEmail)) {
+      emailInput.classList.add("notValid")
+    } else {
+      emailInput.classList.remove("notValid")
     }
   })
 }
